@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Perfil</title>
+    <link rel="stylesheet" href="/css/estilo.css">
+</head>
+<body>
+
+    <header class="barra-superior">
+        <h1>Mi Perfil</h1>
+        <div>
+            <span>Bienvenido/a, <strong>
+                    <%= usuarioSesion ? usuarioSesion.nombre : 'Usuario' %>
+                </strong></span>
+            <span class="etiqueta-nodo" style="margin-left: 10px;">Nodo: <%= nombreNodo %></span>
+            <a href="<%= datos.rol === 'admin' ? '/admin' : '/cliente' %>" class="btn-volver">Volver al Panel</a>
+            <a href="/salir" class="btn-salir">Cerrar Sesión</a>
+        </div>
+    </header>
+
+    <div class="contenedor-principal contenedor-angosto">
+        <div class="tarjeta-blanca tarjeta-perfil">
+            
+            <div class="cabecera-perfil">
+                <div class="avatar-circulo">
+                    <%= (datos.nombre_completo || datos.nombre || 'U').charAt(0).toUpperCase() %>
+                </div>
+                <div>
+                    <h2 style="margin-bottom: 0.2rem; color: #0f172a;"><%= datos.nombre_completo || datos.nombre %></h2>
+                    <span class="rol-badge"><%= datos.rol === 'admin' ? 'Administrador' : 'Cliente' %></span>
+                    <% if (datos.usuario) { %>
+                        <p style="color: #64748b; font-size: 0.9rem; margin-top: 0.3rem;">Usuario: <strong><%= datos.usuario %></strong></p>
+                    <% } %>
+                </div>
+            </div>
+
+            <% if (error) { %>
+                <div class="alerta-error">
+                    <%= error %>
+                </div>
+            <% } %>
+
+            <% if (exito) { %>
+                <div class="alerta-exito">
+                    <%= exito %>
+                </div>
+            <% } %>
+
+            <form action="/perfil" method="POST" accept-charset="UTF-8">
+                <h3 style="margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid #e2e8f0; color: #0f172a;">Datos Personales</h3>
+                
+                <div class="campo-formulario">
+                    <label>Nombre Completo:</label>
+                    <input type="text" name="nombre_completo" value="<%= datos.nombre_completo || datos.nombre || '' %>" required>
+                </div>
+                
+                <div class="fila-doble">
+                    <div class="campo-formulario">
+                        <label>Correo Electrónico:</label>
+                        <input type="email" name="correo" value="<%= datos.correo || '' %>">
+                    </div>
+                    <div class="campo-formulario">
+                        <label>Teléfono:</label>
+                        <input type="text" name="telefono" value="<%= datos.telefono || '' %>">
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid #e2e8f0; color: #0f172a;">Cambiar Contraseña (Opcional)</h3>
+                <p class="texto-ayuda">Deja estos campos en blanco si no deseas cambiar tu contraseña.</p>
+
+                <div class="campo-formulario">
+                    <label>Contraseña Actual:</label>
+                    <input type="password" name="clave_actual">
+                </div>
+
+                <div class="fila-doble">
+                    <div class="campo-formulario">
+                        <label>Nueva Contraseña:</label>
+                        <input type="password" name="clave_nueva">
+                    </div>
+                    <div class="campo-formulario">
+                        <label>Confirmar Contraseña:</label>
+                        <input type="password" name="clave_confirmar">
+                    </div>
+                </div>
+
+                <div class="acciones-modal" style="margin-top: 1.5rem;">
+                    <button type="submit" class="btn-principal" style="width: 100%;">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

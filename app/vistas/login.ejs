@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema de Recetas - Iniciar Sesión</title>
+    <link rel="stylesheet" href="/css/estilo.css">
+</head>
+
+<body>
+
+    <header class="barra-superior">
+        <h1>Recetas EPN</h1>
+        <span class="etiqueta-nodo">Atendido por: <%= nombreNodo %></span>
+    </header>
+
+    <div class="contenedor-login">
+        <div class="caja-login">
+            <h2>Iniciar Sesión</h2>
+
+            <% if (error) { %>
+                <div class="alerta-error">
+                    <%= error %>
+                </div>
+                <% } %>
+
+                    <form action="/login" method="POST" accept-charset="UTF-8">
+                        <div class="campo-formulario">
+                            <label>Usuario:</label>
+                            <input type="text" name="usuario" placeholder="Ej: admin o cliente" required>
+                        </div>
+
+                        <div class="campo-formulario">
+                            <label>Contraseña:</label>
+                            <input type="password" name="clave" placeholder="••••••••" required>
+                        </div>
+
+                        <button type="submit" class="btn-principal">Ingresar al Sistema</button>
+                    </form>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Catálogo de Recetas</title>
+    <link rel="stylesheet" href="/css/estilo.css">
+</head>
+
+<body>
+
+    <header class="barra-superior">
+        <h1>Menú de Recetas Gastronómicas</h1>
+        <div>
+            <span>Bienvenido/a, <strong>
+                    <%= usuarioSesion ? usuarioSesion.nombre : 'Cliente' %>
+                </strong></span>
+            <span class="etiqueta-nodo" style="margin-left: 10px;">Nodo: <%= nombreNodo %></span>
+            <a href="/perfil" class="btn-volver">Mi Perfil</a>
+            <a href="/salir" class="btn-salir">Cerrar Sesión</a>
+        </div>
+    </header>
+
+    <div class="franja-hero">
+        <h2>Descubre y prepara los mejores platillos</h2>
+        <p>Explora nuestra selección de recetas tradicionales, con ingredientes y video-tutoriales.</p>
+    </div>
+
+    <div class="contenedor-principal">
+
+        <!-- Filtros -->
+        <div class="tarjeta-blanca" style="margin-bottom: 1.5rem;">
+            <form method="GET" action="/cliente" style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                <label style="font-weight: 600;">Filtrar por Categoría:</label>
+                <select name="categoria" style="padding: 0.5rem; border-radius: 4px; border: 1px solid #cbd5e1;">
+                    <option value="">Todas las categorías</option>
+                    <option value="Plato Fuerte" <% if(categoriaFiltro === 'Plato Fuerte'){ %>selected<% } %>>Plato Fuerte</option>
+                    <option value="Entrada" <% if(categoriaFiltro === 'Entrada'){ %>selected<% } %>>Entrada</option>
+                    <option value="Postre" <% if(categoriaFiltro === 'Postre'){ %>selected<% } %>>Postre</option>
+                    <option value="Bebida" <% if(categoriaFiltro === 'Bebida'){ %>selected<% } %>>Bebida</option>
+                </select>
+                <button type="submit" class="btn-principal"
+                    style="width: auto; padding: 0.5rem 1.5rem;">Filtrar</button>
+            </form>
+        </div>
+
+        <!-- Catálogo de Tarjetas -->
+        <div class="grid-recetas">
+            <% recetas.forEach(receta => { %>
+                <div class="tarjeta-receta tarjeta-clickeable" onclick="abrirDetalleCliente('<%= receta.id %>')">
+                    <img src="<%= receta.imagen_url || 'https://images.unsplash.com/photo-1495521821757-a1efb6729352?auto=format&fit=crop&w=600&q=80' %>"
+                        alt="<%= receta.nombre %>" class="imagen-receta">
+
+                    <div class="cuerpo-tarjeta">
+                        <span class="categoria-badge">
+                            <%= receta.categoria %>
+                        </span>
+                        <h3>
+                            <%= receta.nombre %>
+                        </h3>
+                        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.5rem;">
+                            <%= receta.descripcion %>
+                        </p>
+                        <p style="font-size: 0.85rem;"><strong><%= receta.porciones %></strong>
+                            <%= receta.unidad || 'porciones' %>
+                        </p>
+
+                        <button class="btn-agregar" onclick="event.stopPropagation(); agregarAlMenu('<%= receta.nombre %>')">Agregar
+                            a Mi Menú</button>
+                    </div>
+                </div>
+                <% }) %>
+        </div>
+
+        <% if (recetas.length === 0) { %>
+            <div class="tarjeta-blanca" style="text-align:center; margin-top: 1.5rem;">
+                <p>No hay recetas disponibles para esta categoría por el momento.</p>
+            </div>
+            <% } %>
+
+    </div>
+
+    <!-- Modal de Detalle de Receta -->
+    <div id="modal-fondo" class="modal-fondo">
+        <div class="modal-caja">
+            <button class="modal-cerrar" onclick="cerrarModalCliente()">&times;</button>
+
+            <img id="detalle-imagen" src="" alt="" class="modal-imagen">
+            <span id="detalle-categoria" class="categoria-badge"></span>
+            <h2 id="detalle-nombre"></h2>
+            <p><strong>Cantidad:</strong> <span id="detalle-porciones"></span></p>
+            <h4>Descripción</h4>
+            <p id="detalle-descripcion"></p>
+            <h4>Ingredientes</h4>
+            <p id="detalle-ingredientes"></p>
+            <a id="detalle-video" href="#" target="_blank" class="enlace-video">▶ Ver Video Tutorial</a>
+
+            <div class="acciones-modal">
+                <button class="btn-principal" style="width:auto;" id="detalle-agregar">Agregar a Mi Menú</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/cliente.js"></script>
+</body>
+
+</html>

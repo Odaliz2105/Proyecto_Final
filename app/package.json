@@ -1,0 +1,17 @@
+{
+    "name": "recetas-distribuido",
+    "version": "1.0.0",
+    "description": "Sistema de gestión de recetas distribuido",
+    "main": "servidor.js",
+    "scripts": {
+        "inicio": "node servidor.js"
+    },
+    "dependencies": {
+        "dotenv": "^16.4.5",
+        "ejs": "^3.1.10",
+        "express": "^4.19.2",
+        "express-mysql-session": "^3.0.3",
+        "express-session": "^1.18.0",
+        "mysql2": "^3.10.0"
+    }
+}

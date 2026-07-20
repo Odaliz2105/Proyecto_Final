@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Administración - Recetas</title>
+    <link rel="stylesheet" href="/css/estilo.css">
+</head>
+
+<body>
+
+    <header class="barra-superior">
+        <h1>Panel de Administración (CRUD Recetas)</h1>
+        <div>
+            <span>Bienvenido/a, <strong>
+                    <%= usuarioSesion ? usuarioSesion.nombre : 'Admin' %>
+                </strong></span>
+            <span class="etiqueta-nodo" style="margin-left: 10px;">Nodo: <%= nombreNodo %></span>
+            <a href="/perfil" class="btn-volver">Mi Perfil</a>
+            <a href="/salir" class="btn-salir">Cerrar Sesión</a>
+        </div>
+    </header>
+
+    <div class="contenedor-principal">
+
+        <% if (error) { %>
+            <div class="alerta-error">
+                <%= error %>
+            </div>
+            <% } %>
+
+                <div class="seccion-flex">
+
+                    <!-- Tablero: Formulario para Registrar Nueva Receta -->
+                    <div class="tarjeta-blanca">
+                        <h3>Crear Nueva Receta</h3>
+                        <form action="/admin/crear" method="POST" accept-charset="UTF-8" style="margin-top: 1rem;">
+
+                            <div class="campo-formulario">
+                                <label>Código Único:</label>
+                                <input type="text" name="codigo" placeholder="Ej: REC-004" required>
+                            </div>
+
+                            <div class="campo-formulario">
+                                <label>Nombre del Platillo:</label>
+                                <input type="text" name="nombre" placeholder="Ej: Seco de Chivo" required>
+                            </div>
+
+                            <div class="campo-formulario">
+                                <label>Categoría:</label>
+                                <select name="categoria" required>
+                                    <option value="Plato Fuerte">Plato Fuerte</option>
+                                    <option value="Entrada">Entrada</option>
+                                    <option value="Postre">Postre</option>
+                                    <option value="Bebida">Bebida</option>
+                                </select>
+                            </div>
+
+                            <div class="fila-doble">
+                                <div class="campo-formulario">
+                                    <label>Porciones:</label>
+                                    <input type="number" name="porciones" value="4" min="1" required>
+                                </div>
+
+                                <div class="campo-formulario">
+                                    <label>Unidad:</label>
+                                    <select name="unidad">
+                                        <option value="porciones">Porciones</option>
+                                        <option value="unidades">Unidades</option>
+                                        <option value="raciones">Raciones</option>
+                                        <option value="personas">Personas</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="campo-formulario">
+                                <label>Descripción / Preparación:</label>
+                                <textarea name="descripcion" rows="3" placeholder="Detalles de preparación..."
+                                    required></textarea>
+                            </div>
+
+                            <div class="campo-formulario">
+                                <label>Ingredientes:</label>
+                                <textarea name="ingredientes" rows="2"
+                                    placeholder="Ej: Papa, queso, cebolla, comino..."></textarea>
+                            </div>
+
+                            <div class="campo-formulario">
+                                <label>URL de Imagen:</label>
+                                <input type="url" name="imagen_url" placeholder="https://ejemplo.com/imagen.jpg">
+                            </div>
+
+                            <div class="campo-formulario">
+                                <label>URL Video (YouTube):</label>
+                                <input type="url" name="video_url" placeholder="https://youtube.com/watch?v=...">
+                            </div>
+
+                            <div class="campo-formulario campo-checkbox">
+                                <label><input type="checkbox" name="disponible" checked> Disponible para
+                                    clientes</label>
+                            </div>
+
+                            <button type="submit" class="btn-principal">Guardar Receta</button>
+                        </form>
+                    </div>
+
+                    <!-- Galería de Recetas Registradas -->
+                    <div class="tarjeta-blanca">
+                        <h3>Catálogo de Recetas Existentes</h3>
+                        <p class="texto-ayuda">Haz clic en una tarjeta para ver el detalle completo o editarla.</p>
+
+                        <div class="grid-recetas grid-admin">
+                            <% recetas.forEach(r => { %>
+                                <div class="tarjeta-receta tarjeta-clickeable" onclick="abrirDetalle('<%= r.id %>')">
+                                    <img src="<%= r.imagen_url || 'https://images.unsplash.com/photo-1495521821757-a1efb6729352?auto=format&fit=crop&w=600&q=80' %>"
+                                        alt="<%= r.nombre %>" class="imagen-receta">
+                                    <% if (!r.disponible) { %>
+                                        <span class="etiqueta-no-disponible">No disponible</span>
+                                        <% } %>
+                                            <div class="cuerpo-tarjeta">
+                                                <span class="categoria-badge">
+                                                    <%= r.categoria %>
+                                                </span>
+                                                <h3>
+                                                    <%= r.nombre %>
+                                                </h3>
+                                                <p class="codigo-chip">Código: <%= r.codigo %></p>
+                                                <p style="font-size: 0.85rem;"><strong><%= r.porciones %></strong>
+                                                    <%= r.unidad || 'porciones' %>
+                                                </p>
+                                            </div>
+                                </div>
+                                <% }) %>
+                        </div>
+                    </div>
+
+                </div>
+    </div>
+
+    <!-- Modal de Detalle / Edición -->
+    <div id="modal-fondo" class="modal-fondo">
+        <div class="modal-caja">
+            <button class="modal-cerrar" onclick="cerrarModal()">&times;</button>
+
+            <div id="vista-detalle">
+                <img id="detalle-imagen" src="" alt="" class="modal-imagen">
+                <span id="detalle-categoria" class="categoria-badge"></span>
+                <h2 id="detalle-nombre"></h2>
+                <p class="codigo-chip" id="detalle-codigo"></p>
+                <p><strong>Cantidad:</strong> <span id="detalle-porciones"></span></p>
+                <h4>Descripción</h4>
+                <p id="detalle-descripcion"></p>
+                <h4>Ingredientes</h4>
+                <p id="detalle-ingredientes"></p>
+                <a id="detalle-video" href="#" target="_blank" class="enlace-video">▶ Ver Video Tutorial</a>
+
+                <div class="acciones-modal">
+                    <button class="btn-principal" style="width:auto;" onclick="mostrarEdicion()">Editar</button>
+                    <a id="detalle-eliminar" href="#" class="btn-eliminar btn-eliminar-modal"
+                        onclick="return confirm('¿Eliminar esta receta?')">Eliminar</a>
+                </div>
+            </div>
+
+            <form id="form-edicion" action="/admin/editar/" method="POST" accept-charset="UTF-8"
+                style="display:none;">
+                <h2>Editar Receta</h2>
+
+                <div class="campo-formulario">
+                    <label>Código Único:</label>
+                    <input type="text" name="codigo" id="editar-codigo" required>
+                </div>
+
+                <div class="campo-formulario">
+                    <label>Nombre del Platillo:</label>
+                    <input type="text" name="nombre" id="editar-nombre" required>
+                </div>
+
+                <div class="campo-formulario">
+                    <label>Categoría:</label>
+                    <select name="categoria" id="editar-categoria" required>
+                        <option value="Plato Fuerte">Plato Fuerte</option>
+                        <option value="Entrada">Entrada</option>
+                        <option value="Postre">Postre</option>
+                        <option value="Bebida">Bebida</option>
+                    </select>
+                </div>
+
+                <div class="fila-doble">
+                    <div class="campo-formulario">
+                        <label>Porciones:</label>
+                        <input type="number" name="porciones" id="editar-porciones" min="1" required>
+                    </div>
+                    <div class="campo-formulario">
+                        <label>Unidad:</label>
+                        <select name="unidad" id="editar-unidad">
+                            <option value="porciones">Porciones</option>
+                            <option value="unidades">Unidades</option>
+                            <option value="raciones">Raciones</option>
+                            <option value="personas">Personas</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="campo-formulario">
+                    <label>Descripción / Preparación:</label>
+                    <textarea name="descripcion" id="editar-descripcion" rows="3" required></textarea>
+                </div>
+
+                <div class="campo-formulario">
+                    <label>Ingredientes:</label>
+                    <textarea name="ingredientes" id="editar-ingredientes" rows="2"></textarea>
+                </div>
+
+                <div class="campo-formulario">
+                    <label>URL de Imagen:</label>
+                    <input type="url" name="imagen_url" id="editar-imagen">
+                </div>
+
+                <div class="campo-formulario">
+                    <label>URL Video (YouTube):</label>
+                    <input type="url" name="video_url" id="editar-video">
+                </div>
+
+                <div class="campo-formulario campo-checkbox">
+                    <label><input type="checkbox" name="disponible" id="editar-disponible"> Disponible para
+                        clientes</label>
+                </div>
+
+                <div class="acciones-modal">
+                    <button type="submit" class="btn-principal" style="width:auto;">Guardar Cambios</button>
+                    <button type="button" class="btn-secundario" onclick="mostrarDetalle()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/admin.js"></script>
+</body>
+
+</html>
