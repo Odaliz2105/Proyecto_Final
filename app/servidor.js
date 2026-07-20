@@ -7,6 +7,7 @@ const path = require('path');
 
 const rutasAutenticacion = require('./rutas/autenticacion');
 const rutasRecetas = require('./rutas/recetas');
+const rutasPerfil = require('./rutas/perfil');
 
 const app = express();
 
@@ -52,6 +53,7 @@ app.get('/salud', (req, res) => {
 // Rutas del sistema
 app.use('/', rutasAutenticacion);
 app.use('/', rutasRecetas);
+app.use('/', rutasPerfil);
 
 // Manejo de error 404
 app.use((req, res) => {
