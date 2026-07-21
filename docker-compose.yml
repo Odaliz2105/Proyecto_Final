@@ -2,12 +2,11 @@ name: recetas-distribuido
 
 services:
 
-  # --- BASE DE DATOS MAESTRO ---
   servidor-maestro:
     image: mysql:8.0
     container_name: servidor-maestro
     restart: unless-stopped
-    command: --server-id=1 --log-bin=mysql-bin --binlog-format=ROW
+    command: --server-id=1 --log-bin=mysql-bin --binlog-format=ROW --gtid-mode=ON --enforce-gtid-consistency=ON --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     environment:
       MYSQL_ROOT_PASSWORD: rootpass123
     volumes:
@@ -15,31 +14,48 @@ services:
       - datos_maestro:/var/lib/mysql
     networks:
       - red_backend
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpass123"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 300s
 
-  # --- BASE DE DATOS ESCLAVO ---
   servidor-esclavo:
     image: mysql:8.0
     container_name: servidor-esclavo
     restart: unless-stopped
-    command: --server-id=2 --read-only=1
+    command: --server-id=2 --read-only=1 --log-bin=mysql-bin --relay-log=relay-bin --gtid-mode=ON --enforce-gtid-consistency=ON --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     environment:
       MYSQL_ROOT_PASSWORD: rootpass123
     volumes:
+      - ./mysql/config-esclavo.sql:/docker-entrypoint-initdb.d/config-esclavo.sql:ro
       - datos_esclavo:/var/lib/mysql
     networks:
       - red_backend
+    depends_on:
+      servidor-maestro:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpass123"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 300s
 
-  # --- NODOS DE APLICACIÓN WEB ---
   nodo-web-1:
     build: ./app
     container_name: nodo-web-1
+    hostname: nodo-web-1
     restart: unless-stopped
     environment:
       - BD_HOST_ESCRITURA=servidor-maestro
       - BD_HOST_LECTURA=servidor-esclavo
     depends_on:
-      - servidor-maestro
-      - servidor-esclavo
+      servidor-maestro:
+        condition: service_healthy
+      servidor-esclavo:
+        condition: service_healthy
     networks:
       - red_backend
       - red_frontend
@@ -49,13 +65,16 @@ services:
   nodo-web-2:
     build: ./app
     container_name: nodo-web-2
+    hostname: nodo-web-2
     restart: unless-stopped
     environment:
       - BD_HOST_ESCRITURA=servidor-maestro
       - BD_HOST_LECTURA=servidor-esclavo
     depends_on:
-      - servidor-maestro
-      - servidor-esclavo
+      servidor-maestro:
+        condition: service_healthy
+      servidor-esclavo:
+        condition: service_healthy
     networks:
       - red_backend
       - red_frontend
@@ -65,20 +84,22 @@ services:
   nodo-web-3:
     build: ./app
     container_name: nodo-web-3
+    hostname: nodo-web-3
     restart: unless-stopped
     environment:
       - BD_HOST_ESCRITURA=servidor-maestro
       - BD_HOST_LECTURA=servidor-esclavo
     depends_on:
-      - servidor-maestro
-      - servidor-esclavo
+      servidor-maestro:
+        condition: service_healthy
+      servidor-esclavo:
+        condition: service_healthy
     networks:
       - red_backend
       - red_frontend
     mem_limit: 512m
     cpus: 1.0
 
-  # --- BALANCEADOR DE CARGA ---
   balanceador-nginx:
     image: nginx:alpine
     container_name: balanceador-nginx
@@ -93,6 +114,20 @@ services:
       - nodo-web-3
     networks:
       - red_frontend
+
+  adminer:
+    image: adminer:latest
+    container_name: adminer
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    depends_on:
+      servidor-maestro:
+        condition: service_healthy
+      servidor-esclavo:
+        condition: service_healthy
+    networks:
+      - red_backend
 
 networks:
   red_backend:

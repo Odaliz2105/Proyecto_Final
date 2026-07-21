@@ -38,7 +38,8 @@ CREATE TABLE IF NOT EXISTS sesiones (
 -- Usuarios iniciales de prueba
 INSERT INTO usuarios (usuario, clave, nombre_completo, correo, telefono, rol) VALUES
 ('admin', 'admin123', 'Alessia Pérez', 'alessia.perez@epn.edu.ec', '0999111222', 'admin'),
-('cliente', 'cliente123', 'Nayely Ayol', 'nayely.ayol@epn.edu.ec', '0999333444', 'cliente')
+('cliente', 'cliente123', 'Nayely Ayol', 'nayely.ayol@epn.edu.ec', '0999333444', 'cliente'),
+('cliente2', 'cliente456', 'Francis G', 'francis.g@epn.edu.ec', '0999555666', 'cliente')
 ON DUPLICATE KEY UPDATE id=id;
 
 -- Recetas iniciales con URLs de imágenes, videos, unidad e ingredientes
@@ -80,3 +81,8 @@ INSERT INTO recetas (codigo, nombre, descripcion, ingredientes, categoria, unida
   'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
 )
 ON DUPLICATE KEY UPDATE id=id;
+
+-- Crear usuario para la replicación (se conectará desde el esclavo)
+CREATE USER IF NOT EXISTS 'replicador'@'%' IDENTIFIED WITH mysql_native_password BY 'rootpass123';
+GRANT REPLICATION SLAVE ON *.* TO 'replicador'@'%';
+FLUSH PRIVILEGES;
