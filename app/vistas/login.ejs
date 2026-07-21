@@ -3,41 +3,82 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Sistema de Recetas - Iniciar Sesión</title>
+    <title>Sazón EPN - Iniciar Sesión</title>
     <link rel="stylesheet" href="/css/estilo.css">
 </head>
 
 <body>
 
     <header class="barra-superior">
-        <h1>Recetas EPN</h1>
-        <span class="etiqueta-nodo">Atendido por: <%= nombreNodo %></span>
+        <div>
+            <h1>Sazón EPN</h1>
+            <p class="subtitulo-sistema">
+                Inventario Gastronómico Distribuido
+            </p>
+        </div>
+
+        <span class="etiqueta-nodo">
+            Atendido por: <%= nombreNodo %>
+        </span>
     </header>
 
     <div class="contenedor-login">
+
         <div class="caja-login">
+
             <h2>Iniciar Sesión</h2>
+
+            <p class="texto-ayuda" style="text-align: center;">
+                Accede al sistema de gestión de productos gastronómicos.
+            </p>
 
             <% if (error) { %>
                 <div class="alerta-error">
                     <%= error %>
                 </div>
-                <% } %>
+            <% } %>
 
-                    <form action="/login" method="POST" accept-charset="UTF-8">
-                        <div class="campo-formulario">
-                            <label>Usuario:</label>
-                            <input type="text" name="usuario" placeholder="Ej: admin o cliente" required>
-                        </div>
+            <form
+                action="/login"
+                method="POST"
+                accept-charset="UTF-8"
+            >
 
-                        <div class="campo-formulario">
-                            <label>Contraseña:</label>
-                            <input type="password" name="clave" placeholder="••••••••" required>
-                        </div>
+                <div class="campo-formulario">
+                    <label>Usuario:</label>
 
-                        <button type="submit" class="btn-principal">Ingresar al Sistema</button>
-                    </form>
+                    <input
+                        type="text"
+                        name="usuario"
+                        placeholder="Ej: admin o cliente"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
+
+                <div class="campo-formulario">
+                    <label>Contraseña:</label>
+
+                    <input
+                        type="password"
+                        name="clave"
+                        placeholder="••••••••"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn-principal"
+                >
+                    Ingresar al sistema
+                </button>
+
+            </form>
+
         </div>
+
     </div>
 
 </body>

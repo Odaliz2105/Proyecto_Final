@@ -3,238 +3,658 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Panel de Administración - Recetas</title>
+    <title>Administración | Sazón EPN</title>
     <link rel="stylesheet" href="/css/estilo.css">
 </head>
 
 <body>
 
     <header class="barra-superior">
-        <h1>Panel de Administración (CRUD Recetas)</h1>
         <div>
-            <span>Bienvenido/a, <strong>
-                    <%= usuarioSesion ? usuarioSesion.nombre : 'Admin' %>
-                </strong></span>
-            <span class="etiqueta-nodo" style="margin-left: 10px;">Nodo: <%= nombreNodo %></span>
-            <a href="/perfil" class="btn-volver">Mi Perfil</a>
-            <a href="/salir" class="btn-salir">Cerrar Sesión</a>
+            <h1>Sazón EPN</h1>
+            <p class="subtitulo-sistema">
+                Inventario Gastronómico Distribuido
+            </p>
+        </div>
+
+        <div>
+            <span>
+                Bienvenido/a,
+                <strong>
+                    <%= usuarioSesion ? usuarioSesion.nombre : 'Administrador' %>
+                </strong>
+            </span>
+
+            <span
+                class="etiqueta-nodo"
+                style="margin-left: 10px;"
+            >
+                Nodo: <%= nombreNodo %>
+            </span>
+
+            <a href="/perfil" class="btn-volver">
+                Mi Perfil
+            </a>
+
+            <a href="/salir" class="btn-salir">
+                Cerrar Sesión
+            </a>
         </div>
     </header>
 
-    <div class="contenedor-principal">
+    <main class="contenedor-principal">
+
+        <section class="cabecera-panel">
+            <div>
+                <h2>Inventario de productos</h2>
+
+                <p class="texto-ayuda">
+                    Administra los productos gastronómicos,
+                    precios, unidades y existencias disponibles.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="btn-principal btn-nuevo-producto"
+                onclick="abrirModalCrear()"
+            >
+                + Registrar producto
+            </button>
+        </section>
 
         <% if (error) { %>
             <div class="alerta-error">
                 <%= error %>
             </div>
-            <% } %>
+        <% } %>
 
-                <div class="seccion-flex">
+        <% if (exito) { %>
+            <div class="alerta-exito">
+                <%= exito %>
+            </div>
+        <% } %>
 
-                    <!-- Tablero: Formulario para Registrar Nueva Receta -->
-                    <div class="tarjeta-blanca">
-                        <h3>Crear Nueva Receta</h3>
-                        <form action="/admin/crear" method="POST" accept-charset="UTF-8" style="margin-top: 1rem;">
+        <section class="tarjeta-blanca">
 
-                            <div class="campo-formulario">
-                                <label>Código Único:</label>
-                                <input type="text" name="codigo" placeholder="Ej: REC-004" required>
-                            </div>
+            <div class="cabecera-catalogo">
+                <div>
+                    <h3>Productos registrados</h3>
 
-                            <div class="campo-formulario">
-                                <label>Nombre del Platillo:</label>
-                                <input type="text" name="nombre" placeholder="Ej: Seco de Chivo" required>
-                            </div>
-
-                            <div class="campo-formulario">
-                                <label>Categoría:</label>
-                                <select name="categoria" required>
-                                    <option value="Plato Fuerte">Plato Fuerte</option>
-                                    <option value="Entrada">Entrada</option>
-                                    <option value="Postre">Postre</option>
-                                    <option value="Bebida">Bebida</option>
-                                </select>
-                            </div>
-
-                            <div class="fila-doble">
-                                <div class="campo-formulario">
-                                    <label>Porciones:</label>
-                                    <input type="number" name="porciones" value="4" min="1" required>
-                                </div>
-
-                                <div class="campo-formulario">
-                                    <label>Unidad:</label>
-                                    <select name="unidad">
-                                        <option value="porciones">Porciones</option>
-                                        <option value="unidades">Unidades</option>
-                                        <option value="raciones">Raciones</option>
-                                        <option value="personas">Personas</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="campo-formulario">
-                                <label>Descripción / Preparación:</label>
-                                <textarea name="descripcion" rows="3" placeholder="Detalles de preparación..."
-                                    required></textarea>
-                            </div>
-
-                            <div class="campo-formulario">
-                                <label>Ingredientes:</label>
-                                <textarea name="ingredientes" rows="2"
-                                    placeholder="Ej: Papa, queso, cebolla, comino..."></textarea>
-                            </div>
-
-                            <div class="campo-formulario">
-                                <label>URL de Imagen:</label>
-                                <input type="url" name="imagen_url" placeholder="https://ejemplo.com/imagen.jpg">
-                            </div>
-
-                            <div class="campo-formulario">
-                                <label>URL Video (YouTube):</label>
-                                <input type="url" name="video_url" placeholder="https://youtube.com/watch?v=...">
-                            </div>
-
-                            <div class="campo-formulario campo-checkbox">
-                                <label><input type="checkbox" name="disponible" checked> Disponible para
-                                    clientes</label>
-                            </div>
-
-                            <button type="submit" class="btn-principal">Guardar Receta</button>
-                        </form>
-                    </div>
-
-                    <!-- Galería de Recetas Registradas -->
-                    <div class="tarjeta-blanca">
-                        <h3>Catálogo de Recetas Existentes</h3>
-                        <p class="texto-ayuda">Haz clic en una tarjeta para ver el detalle completo o editarla.</p>
-
-                        <div class="grid-recetas grid-admin">
-                            <% recetas.forEach(r => { %>
-                                <div class="tarjeta-receta tarjeta-clickeable" onclick="abrirDetalle('<%= r.id %>')">
-                                    <img src="<%= r.imagen_url || 'https://images.unsplash.com/photo-1495521821757-a1efb6729352?auto=format&fit=crop&w=600&q=80' %>"
-                                        alt="<%= r.nombre %>" class="imagen-receta">
-                                    <% if (!r.disponible) { %>
-                                        <span class="etiqueta-no-disponible">No disponible</span>
-                                        <% } %>
-                                            <div class="cuerpo-tarjeta">
-                                                <span class="categoria-badge">
-                                                    <%= r.categoria %>
-                                                </span>
-                                                <h3>
-                                                    <%= r.nombre %>
-                                                </h3>
-                                                <p class="codigo-chip">Código: <%= r.codigo %></p>
-                                                <p style="font-size: 0.85rem;"><strong><%= r.porciones %></strong>
-                                                    <%= r.unidad || 'porciones' %>
-                                                </p>
-                                            </div>
-                                </div>
-                                <% }) %>
-                        </div>
-                    </div>
-
+                    <p class="texto-ayuda">
+                        Selecciona un producto para consultar
+                        sus datos o editarlo.
+                    </p>
                 </div>
-    </div>
 
-    <!-- Modal de Detalle / Edición -->
-    <div id="modal-fondo" class="modal-fondo">
-        <div class="modal-caja">
-            <button class="modal-cerrar" onclick="cerrarModal()">&times;</button>
-
-            <div id="vista-detalle">
-                <img id="detalle-imagen" src="" alt="" class="modal-imagen">
-                <span id="detalle-categoria" class="categoria-badge"></span>
-                <h2 id="detalle-nombre"></h2>
-                <p class="codigo-chip" id="detalle-codigo"></p>
-                <p><strong>Cantidad:</strong> <span id="detalle-porciones"></span></p>
-                <h4>Descripción</h4>
-                <p id="detalle-descripcion"></p>
-                <h4>Ingredientes</h4>
-                <p id="detalle-ingredientes"></p>
-                <a id="detalle-video" href="#" target="_blank" class="enlace-video">▶ Ver Video Tutorial</a>
-
-                <div class="acciones-modal">
-                    <button class="btn-principal" style="width:auto;" onclick="mostrarEdicion()">Editar</button>
-                    <a id="detalle-eliminar" href="#" class="btn-eliminar btn-eliminar-modal"
-                        onclick="return confirm('¿Eliminar esta receta?')">Eliminar</a>
+                <div class="resumen-inventario">
+                    <span>
+                        Total:
+                        <strong><%= productos.length %></strong>
+                    </span>
                 </div>
             </div>
 
-            <form id="form-edicion" action="/admin/editar/" method="POST" accept-charset="UTF-8"
-                style="display:none;">
-                <h2>Editar Receta</h2>
+            <div class="grid-recetas grid-admin">
 
-                <div class="campo-formulario">
-                    <label>Código Único:</label>
-                    <input type="text" name="codigo" id="editar-codigo" required>
+                <% productos.forEach(producto => { %>
+
+                    <article
+                        class="tarjeta-receta tarjeta-clickeable"
+                        onclick="abrirDetalle('<%= producto.id %>')"
+                    >
+
+                        <div class="contenedor-imagen-producto">
+
+                            <img
+                                src="<%= producto.imagen_url || 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80' %>"
+                                alt="<%= producto.nombre %>"
+                                class="imagen-receta"
+                            >
+
+                            <% if (!producto.disponible) { %>
+                                <span class="etiqueta-no-disponible">
+                                    Agotado
+                                </span>
+                            <% } else { %>
+                                <span class="etiqueta-disponible">
+                                    Disponible
+                                </span>
+                            <% } %>
+
+                        </div>
+
+                        <div class="cuerpo-tarjeta">
+
+                            <span class="categoria-badge">
+                                <%= producto.categoria %>
+                            </span>
+
+                            <h3>
+                                <%= producto.nombre %>
+                            </h3>
+
+                            <p class="codigo-chip">
+                                Código: <%= producto.codigo %>
+                            </p>
+
+                            <div class="datos-producto-tarjeta">
+
+                                <p>
+                                    <strong>Stock:</strong>
+                                    <%= producto.stock %>
+                                    <%= producto.unidad %>
+                                </p>
+
+                                <p class="precio-producto">
+                                    $<%= Number(producto.precio).toFixed(2) %>
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                <% }) %>
+
+            </div>
+
+            <% if (productos.length === 0) { %>
+
+                <div class="estado-vacio">
+                    <h3>No existen productos registrados</h3>
+
+                    <p>
+                        Registra el primer producto gastronómico
+                        para comenzar a gestionar el inventario.
+                    </p>
+
+                    <button
+                        type="button"
+                        class="btn-principal"
+                        onclick="abrirModalCrear()"
+                    >
+                        Registrar producto
+                    </button>
                 </div>
 
-                <div class="campo-formulario">
-                    <label>Nombre del Platillo:</label>
-                    <input type="text" name="nombre" id="editar-nombre" required>
-                </div>
+            <% } %>
 
-                <div class="campo-formulario">
-                    <label>Categoría:</label>
-                    <select name="categoria" id="editar-categoria" required>
-                        <option value="Plato Fuerte">Plato Fuerte</option>
-                        <option value="Entrada">Entrada</option>
-                        <option value="Postre">Postre</option>
-                        <option value="Bebida">Bebida</option>
-                    </select>
+        </section>
+
+    </main>
+
+    <!-- ================================================= -->
+    <!-- MODAL PARA REGISTRAR PRODUCTO -->
+    <!-- ================================================= -->
+
+    <div id="modal-crear-fondo" class="modal-fondo">
+
+        <div class="modal-caja modal-formulario-producto">
+
+            <button
+                type="button"
+                class="modal-cerrar"
+                onclick="cerrarModalCrear()"
+            >
+                &times;
+            </button>
+
+            <div class="cabecera-modal-formulario">
+                <h2>Registrar producto</h2>
+
+                <p>
+                    Ingresa la información del nuevo
+                    producto gastronómico.
+                </p>
+            </div>
+
+            <form
+                action="/admin/crear"
+                method="POST"
+                accept-charset="UTF-8"
+            >
+
+                <div class="fila-doble">
+
+                    <div class="campo-formulario">
+                        <label>Código único:</label>
+
+                        <input
+                            type="text"
+                            name="codigo"
+                            placeholder="Ej: PROD-006"
+                            required
+                        >
+                    </div>
+
+                    <div class="campo-formulario">
+                        <label>Nombre del producto:</label>
+
+                        <input
+                            type="text"
+                            name="nombre"
+                            placeholder="Ej: Fanesca"
+                            required
+                        >
+                    </div>
+
                 </div>
 
                 <div class="fila-doble">
+
                     <div class="campo-formulario">
-                        <label>Porciones:</label>
-                        <input type="number" name="porciones" id="editar-porciones" min="1" required>
-                    </div>
-                    <div class="campo-formulario">
-                        <label>Unidad:</label>
-                        <select name="unidad" id="editar-unidad">
-                            <option value="porciones">Porciones</option>
-                            <option value="unidades">Unidades</option>
-                            <option value="raciones">Raciones</option>
-                            <option value="personas">Personas</option>
+                        <label>Categoría:</label>
+
+                        <select name="categoria" required>
+                            <option value="">
+                                Selecciona una categoría
+                            </option>
+
+                            <option value="Platos fuertes">
+                                Platos fuertes
+                            </option>
+
+                            <option value="Sopas">
+                                Sopas
+                            </option>
+
+                            <option value="Entradas">
+                                Entradas
+                            </option>
+
+                            <option value="Postres">
+                                Postres
+                            </option>
+
+                            <option value="Bebidas">
+                                Bebidas
+                            </option>
                         </select>
                     </div>
+
+                    <div class="campo-formulario">
+                        <label>Unidad:</label>
+
+                        <select name="unidad" required>
+                            <option value="">
+                                Selecciona una unidad
+                            </option>
+
+                            <option value="porciones">
+                                Porciones
+                            </option>
+
+                            <option value="unidades">
+                                Unidades
+                            </option>
+
+                            <option value="vasos">
+                                Vasos
+                            </option>
+
+                            <option value="bandejas">
+                                Bandejas
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="fila-doble">
+
+                    <div class="campo-formulario">
+                        <label>Stock inicial:</label>
+
+                        <input
+                            type="number"
+                            name="stock"
+                            value="0"
+                            min="0"
+                            required
+                        >
+                    </div>
+
+                    <div class="campo-formulario">
+                        <label>Precio:</label>
+
+                        <input
+                            type="number"
+                            name="precio"
+                            value="0.00"
+                            min="0"
+                            step="0.01"
+                            required
+                        >
+                    </div>
+
                 </div>
 
                 <div class="campo-formulario">
-                    <label>Descripción / Preparación:</label>
-                    <textarea name="descripcion" id="editar-descripcion" rows="3" required></textarea>
+                    <label>Descripción:</label>
+
+                    <textarea
+                        name="descripcion"
+                        rows="4"
+                        placeholder="Describe las características del producto..."
+                        required
+                    ></textarea>
                 </div>
 
                 <div class="campo-formulario">
-                    <label>Ingredientes:</label>
-                    <textarea name="ingredientes" id="editar-ingredientes" rows="2"></textarea>
-                </div>
+                    <label>URL de imagen:</label>
 
-                <div class="campo-formulario">
-                    <label>URL de Imagen:</label>
-                    <input type="url" name="imagen_url" id="editar-imagen">
-                </div>
-
-                <div class="campo-formulario">
-                    <label>URL Video (YouTube):</label>
-                    <input type="url" name="video_url" id="editar-video">
-                </div>
-
-                <div class="campo-formulario campo-checkbox">
-                    <label><input type="checkbox" name="disponible" id="editar-disponible"> Disponible para
-                        clientes</label>
+                    <input
+                        type="url"
+                        name="imagen_url"
+                        placeholder="https://ejemplo.com/producto.jpg"
+                    >
                 </div>
 
                 <div class="acciones-modal">
-                    <button type="submit" class="btn-principal" style="width:auto;">Guardar Cambios</button>
-                    <button type="button" class="btn-secundario" onclick="mostrarDetalle()">Cancelar</button>
+
+                    <button
+                        type="button"
+                        class="btn-secundario"
+                        onclick="cerrarModalCrear()"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn-principal"
+                    >
+                        Guardar producto
+                    </button>
+
                 </div>
+
             </form>
+
         </div>
+
+    </div>
+
+    <!-- ================================================= -->
+    <!-- MODAL PARA VER Y EDITAR PRODUCTO -->
+    <!-- ================================================= -->
+
+    <div id="modal-fondo" class="modal-fondo">
+
+        <div class="modal-caja">
+
+            <button
+                type="button"
+                class="modal-cerrar"
+                onclick="cerrarModal()"
+            >
+                &times;
+            </button>
+
+            <div id="vista-detalle">
+
+                <img
+                    id="detalle-imagen"
+                    src=""
+                    alt=""
+                    class="modal-imagen"
+                >
+
+                <span
+                    id="detalle-categoria"
+                    class="categoria-badge"
+                ></span>
+
+                <h2 id="detalle-nombre"></h2>
+
+                <p
+                    class="codigo-chip"
+                    id="detalle-codigo"
+                ></p>
+
+                <div class="detalle-inventario">
+
+                    <p>
+                        <strong>Stock disponible:</strong>
+                        <span id="detalle-stock"></span>
+                    </p>
+
+                    <p>
+                        <strong>Unidad:</strong>
+                        <span id="detalle-unidad"></span>
+                    </p>
+
+                    <p>
+                        <strong>Precio:</strong>
+                        $<span id="detalle-precio"></span>
+                    </p>
+
+                </div>
+
+                <h4>Descripción</h4>
+
+                <p id="detalle-descripcion"></p>
+
+                <div class="acciones-modal">
+
+                    <button
+                        type="button"
+                        class="btn-principal"
+                        onclick="mostrarEdicion()"
+                    >
+                        Editar
+                    </button>
+
+                    <a
+                        id="detalle-eliminar"
+                        href="#"
+                        class="btn-eliminar btn-eliminar-modal"
+                        onclick="return confirm('¿Eliminar este producto?')"
+                    >
+                        Eliminar
+                    </a>
+
+                </div>
+
+            </div>
+
+            <form
+                id="form-edicion"
+                action="/admin/editar/"
+                method="POST"
+                accept-charset="UTF-8"
+                style="display: none;"
+            >
+
+                <h2>Editar producto</h2>
+
+                <div class="fila-doble">
+
+                    <div class="campo-formulario">
+                        <label>Código único:</label>
+
+                        <input
+                            type="text"
+                            name="codigo"
+                            id="editar-codigo"
+                            required
+                        >
+                    </div>
+
+                    <div class="campo-formulario">
+                        <label>Nombre del producto:</label>
+
+                        <input
+                            type="text"
+                            name="nombre"
+                            id="editar-nombre"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+                <div class="fila-doble">
+
+                    <div class="campo-formulario">
+                        <label>Categoría:</label>
+
+                        <select
+                            name="categoria"
+                            id="editar-categoria"
+                            required
+                        >
+                            <option value="Platos fuertes">
+                                Platos fuertes
+                            </option>
+
+                            <option value="Sopas">
+                                Sopas
+                            </option>
+
+                            <option value="Entradas">
+                                Entradas
+                            </option>
+
+                            <option value="Postres">
+                                Postres
+                            </option>
+
+                            <option value="Bebidas">
+                                Bebidas
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="campo-formulario">
+                        <label>Unidad:</label>
+
+                        <select
+                            name="unidad"
+                            id="editar-unidad"
+                            required
+                        >
+                            <option value="porciones">
+                                Porciones
+                            </option>
+
+                            <option value="unidades">
+                                Unidades
+                            </option>
+
+                            <option value="vasos">
+                                Vasos
+                            </option>
+
+                            <option value="bandejas">
+                                Bandejas
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="fila-doble">
+
+                    <div class="campo-formulario">
+                        <label>Stock:</label>
+
+                        <input
+                            type="number"
+                            name="stock"
+                            id="editar-stock"
+                            min="0"
+                            required
+                        >
+                    </div>
+
+                    <div class="campo-formulario">
+                        <label>Precio:</label>
+
+                        <input
+                            type="number"
+                            name="precio"
+                            id="editar-precio"
+                            min="0"
+                            step="0.01"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+                <div class="campo-formulario">
+                    <label>Descripción:</label>
+
+                    <textarea
+                        name="descripcion"
+                        id="editar-descripcion"
+                        rows="4"
+                        required
+                    ></textarea>
+                </div>
+
+                <div class="campo-formulario">
+                    <label>URL de imagen:</label>
+
+                    <input
+                        type="url"
+                        name="imagen_url"
+                        id="editar-imagen"
+                    >
+                </div>
+
+                <div class="acciones-modal">
+
+                    <button
+                        type="button"
+                        class="btn-secundario"
+                        onclick="mostrarDetalle()"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn-principal"
+                    >
+                        Guardar cambios
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
     </div>
 
     <script src="/js/admin.js"></script>
+
+    <script>
+        function abrirModalCrear() {
+            document
+                .getElementById('modal-crear-fondo')
+                .classList.add('activo');
+        }
+
+        function cerrarModalCrear() {
+            document
+                .getElementById('modal-crear-fondo')
+                .classList.remove('activo');
+        }
+
+        document
+            .getElementById('modal-crear-fondo')
+            .addEventListener('click', function (evento) {
+                if (evento.target === this) {
+                    cerrarModalCrear();
+                }
+            });
+    </script>
+
 </body>
 
 </html>

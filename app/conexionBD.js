@@ -5,7 +5,7 @@ const conexionMaestro = mysql.createPool({
     port: 3306,
     user: 'root',
     password: 'rootpass123',
-    database: 'recetas_db',
+    database: 'inventario_gastronomico_db',
     charset: 'utf8mb4',
     waitForConnections: true,
     connectionLimit: 10
@@ -16,10 +16,13 @@ const conexionEsclavo = mysql.createPool({
     port: 3306,
     user: 'root',
     password: 'rootpass123',
-    database: 'recetas_db',
+    database: 'inventario_gastronomico_db',
     charset: 'utf8mb4',
     waitForConnections: true,
     connectionLimit: 10
 });
 
-module.exports = { conexionMaestro, conexionEsclavo };
+module.exports = {
+    conexionMaestro,
+    conexionEsclavo
+};

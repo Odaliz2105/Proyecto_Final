@@ -1,4 +1,4 @@
-name: recetas-distribuido
+name: inventario-gastronomico-distribuido
 
 services:
 
@@ -15,7 +15,15 @@ services:
     networks:
       - red_backend
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpass123"]
+      test:
+        - CMD
+        - mysqladmin
+        - ping
+        - -h
+        - localhost
+        - -u
+        - root
+        - -prootpass123
       interval: 10s
       timeout: 5s
       retries: 10
@@ -37,7 +45,15 @@ services:
       servidor-maestro:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpass123"]
+      test:
+        - CMD
+        - mysqladmin
+        - ping
+        - -h
+        - localhost
+        - -u
+        - root
+        - -prootpass123
       interval: 10s
       timeout: 5s
       retries: 10
@@ -49,8 +65,8 @@ services:
     hostname: nodo-web-1
     restart: unless-stopped
     environment:
-      - BD_HOST_ESCRITURA=servidor-maestro
-      - BD_HOST_LECTURA=servidor-esclavo
+      BD_HOST_ESCRITURA: servidor-maestro
+      BD_HOST_LECTURA: servidor-esclavo
     depends_on:
       servidor-maestro:
         condition: service_healthy
@@ -68,8 +84,27 @@ services:
     hostname: nodo-web-2
     restart: unless-stopped
     environment:
-      - BD_HOST_ESCRITURA=servidor-maestro
-      - BD_HOST_LECTURA=servidor-esclavo
+      BD_HOST_ESCRITURA: servidor-maestro
+      BD_HOST_LECTURA: servidor-esclavo
+    depends_on:
+      servidor-maestro:
+        condition: service_healthy
+      servidor-esclavo:
+        condition: service_healthy
+    networks:
+      - red_backend
+      - red_frontend
+    mem_limit: 384m
+    cpus: 0.75
+
+  nodo-web-3:
+    build: ./app
+    container_name: nodo-web-3
+    hostname: nodo-web-3
+    restart: unless-stopped
+    environment:
+      BD_HOST_ESCRITURA: servidor-maestro
+      BD_HOST_LECTURA: servidor-esclavo
     depends_on:
       servidor-maestro:
         condition: service_healthy
@@ -80,25 +115,6 @@ services:
       - red_frontend
     mem_limit: 256m
     cpus: 0.5
-
-  nodo-web-3:
-    build: ./app
-    container_name: nodo-web-3
-    hostname: nodo-web-3
-    restart: unless-stopped
-    environment:
-      - BD_HOST_ESCRITURA=servidor-maestro
-      - BD_HOST_LECTURA=servidor-esclavo
-    depends_on:
-      servidor-maestro:
-        condition: service_healthy
-      servidor-esclavo:
-        condition: service_healthy
-    networks:
-      - red_backend
-      - red_frontend
-    mem_limit: 512m
-    cpus: 1.0
 
   balanceador-nginx:
     image: nginx:alpine
@@ -132,9 +148,11 @@ services:
 networks:
   red_backend:
     driver: bridge
+
   red_frontend:
     driver: bridge
 
 volumes:
   datos_maestro:
+
   datos_esclavo:

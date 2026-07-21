@@ -3,105 +3,271 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Catálogo de Recetas</title>
+    <title>Catálogo de Productos | Sazón EPN</title>
     <link rel="stylesheet" href="/css/estilo.css">
 </head>
 
 <body>
 
     <header class="barra-superior">
-        <h1>Menú de Recetas Gastronómicas</h1>
         <div>
-            <span>Bienvenido/a, <strong>
+            <h1>Sazón EPN</h1>
+            <p class="subtitulo-sistema">
+                Inventario Gastronómico Distribuido
+            </p>
+        </div>
+
+        <div>
+            <span>
+                Bienvenido/a,
+                <strong>
                     <%= usuarioSesion ? usuarioSesion.nombre : 'Cliente' %>
-                </strong></span>
-            <span class="etiqueta-nodo" style="margin-left: 10px;">Nodo: <%= nombreNodo %></span>
-            <a href="/perfil" class="btn-volver">Mi Perfil</a>
-            <a href="/salir" class="btn-salir">Cerrar Sesión</a>
+                </strong>
+            </span>
+
+            <span class="etiqueta-nodo" style="margin-left: 10px;">
+                Nodo: <%= nombreNodo %>
+            </span>
+
+            <a href="/perfil" class="btn-volver">
+                Mi Perfil
+            </a>
+
+            <a href="/salir" class="btn-salir">
+                Cerrar Sesión
+            </a>
         </div>
     </header>
 
-    <div class="franja-hero">
-        <h2>Descubre y prepara los mejores platillos</h2>
-        <p>Explora nuestra selección de recetas tradicionales, con ingredientes y video-tutoriales.</p>
-    </div>
+    <section class="franja-hero">
+        <h2>Productos gastronómicos disponibles</h2>
 
-    <div class="contenedor-principal">
+        <p>
+            Consulta nuestro inventario, revisa precios y verifica
+            la disponibilidad de cada producto.
+        </p>
+    </section>
 
-        <!-- Filtros -->
-        <div class="tarjeta-blanca" style="margin-bottom: 1.5rem;">
-            <form method="GET" action="/cliente" style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-                <label style="font-weight: 600;">Filtrar por Categoría:</label>
-                <select name="categoria" style="padding: 0.5rem; border-radius: 4px; border: 1px solid #cbd5e1;">
-                    <option value="">Todas las categorías</option>
-                    <option value="Plato Fuerte" <% if(categoriaFiltro === 'Plato Fuerte'){ %>selected<% } %>>Plato Fuerte</option>
-                    <option value="Entrada" <% if(categoriaFiltro === 'Entrada'){ %>selected<% } %>>Entrada</option>
-                    <option value="Postre" <% if(categoriaFiltro === 'Postre'){ %>selected<% } %>>Postre</option>
-                    <option value="Bebida" <% if(categoriaFiltro === 'Bebida'){ %>selected<% } %>>Bebida</option>
+    <main class="contenedor-principal">
+
+        <section class="tarjeta-blanca" style="margin-bottom: 1.5rem;">
+
+            <form
+                method="GET"
+                action="/cliente"
+                style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;"
+            >
+                <label style="font-weight: 600;">
+                    Filtrar por categoría:
+                </label>
+
+                <select
+                    name="categoria"
+                    style="padding: 0.5rem; border-radius: 4px; border: 1px solid #cbd5e1;"
+                >
+                    <option value="">
+                        Todas las categorías
+                    </option>
+
+                    <option
+                        value="Platos fuertes"
+                        <% if (categoriaFiltro === 'Platos fuertes') { %>
+                            selected
+                        <% } %>
+                    >
+                        Platos fuertes
+                    </option>
+
+                    <option
+                        value="Sopas"
+                        <% if (categoriaFiltro === 'Sopas') { %>
+                            selected
+                        <% } %>
+                    >
+                        Sopas
+                    </option>
+
+                    <option
+                        value="Entradas"
+                        <% if (categoriaFiltro === 'Entradas') { %>
+                            selected
+                        <% } %>
+                    >
+                        Entradas
+                    </option>
+
+                    <option
+                        value="Postres"
+                        <% if (categoriaFiltro === 'Postres') { %>
+                            selected
+                        <% } %>
+                    >
+                        Postres
+                    </option>
+
+                    <option
+                        value="Bebidas"
+                        <% if (categoriaFiltro === 'Bebidas') { %>
+                            selected
+                        <% } %>
+                    >
+                        Bebidas
+                    </option>
                 </select>
-                <button type="submit" class="btn-principal"
-                    style="width: auto; padding: 0.5rem 1.5rem;">Filtrar</button>
-            </form>
-        </div>
 
-        <!-- Catálogo de Tarjetas -->
-        <div class="grid-recetas">
-            <% recetas.forEach(receta => { %>
-                <div class="tarjeta-receta tarjeta-clickeable" onclick="abrirDetalleCliente('<%= receta.id %>')">
-                    <img src="<%= receta.imagen_url || 'https://images.unsplash.com/photo-1495521821757-a1efb6729352?auto=format&fit=crop&w=600&q=80' %>"
-                        alt="<%= receta.nombre %>" class="imagen-receta">
+                <button
+                    type="submit"
+                    class="btn-principal"
+                    style="width: auto; padding: 0.5rem 1.5rem;"
+                >
+                    Filtrar
+                </button>
+            </form>
+
+        </section>
+
+        <section class="grid-recetas">
+
+            <% productos.forEach(producto => { %>
+
+                <article
+                    class="tarjeta-receta tarjeta-clickeable"
+                    onclick="abrirDetalleCliente('<%= producto.id %>')"
+                >
+
+                    <div class="contenedor-imagen-producto">
+
+                        <img
+                            src="<%= producto.imagen_url || 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80' %>"
+                            alt="<%= producto.nombre %>"
+                            class="imagen-receta"
+                        >
+
+                        <span class="etiqueta-disponible">
+                            Disponible
+                        </span>
+
+                    </div>
 
                     <div class="cuerpo-tarjeta">
+
                         <span class="categoria-badge">
-                            <%= receta.categoria %>
+                            <%= producto.categoria %>
                         </span>
+
                         <h3>
-                            <%= receta.nombre %>
+                            <%= producto.nombre %>
                         </h3>
+
                         <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.5rem;">
-                            <%= receta.descripcion %>
-                        </p>
-                        <p style="font-size: 0.85rem;"><strong><%= receta.porciones %></strong>
-                            <%= receta.unidad || 'porciones' %>
+                            <%= producto.descripcion || 'Sin descripción disponible.' %>
                         </p>
 
-                        <button class="btn-agregar" onclick="event.stopPropagation(); agregarAlMenu('<%= receta.nombre %>')">Agregar
-                            a Mi Menú</button>
+                        <p style="font-size: 0.85rem;">
+                            <strong>Stock:</strong>
+                            <%= producto.stock %>
+                            <%= producto.unidad %>
+                        </p>
+
+                        <p class="precio-producto">
+                            $<%= Number(producto.precio).toFixed(2) %>
+                        </p>
+
+                        <button
+                            type="button"
+                            class="btn-agregar"
+                            onclick="event.stopPropagation(); agregarAlPedido('<%= producto.nombre %>')"
+                        >
+                            Agregar al pedido
+                        </button>
+
                     </div>
-                </div>
-                <% }) %>
-        </div>
 
-        <% if (recetas.length === 0) { %>
-            <div class="tarjeta-blanca" style="text-align:center; margin-top: 1.5rem;">
-                <p>No hay recetas disponibles para esta categoría por el momento.</p>
-            </div>
-            <% } %>
+                </article>
 
-    </div>
+            <% }) %>
 
-    <!-- Modal de Detalle de Receta -->
+        </section>
+
+        <% if (productos.length === 0) { %>
+
+            <section
+                class="tarjeta-blanca"
+                style="text-align: center; margin-top: 1.5rem;"
+            >
+                <p>
+                    No hay productos disponibles para esta categoría.
+                </p>
+            </section>
+
+        <% } %>
+
+    </main>
+
     <div id="modal-fondo" class="modal-fondo">
-        <div class="modal-caja">
-            <button class="modal-cerrar" onclick="cerrarModalCliente()">&times;</button>
 
-            <img id="detalle-imagen" src="" alt="" class="modal-imagen">
-            <span id="detalle-categoria" class="categoria-badge"></span>
+        <div class="modal-caja">
+
+            <button
+                type="button"
+                class="modal-cerrar"
+                onclick="cerrarModalCliente()"
+            >
+                &times;
+            </button>
+
+            <img
+                id="detalle-imagen"
+                src=""
+                alt=""
+                class="modal-imagen"
+            >
+
+            <span
+                id="detalle-categoria"
+                class="categoria-badge"
+            ></span>
+
             <h2 id="detalle-nombre"></h2>
-            <p><strong>Cantidad:</strong> <span id="detalle-porciones"></span></p>
+
+            <p>
+                <strong>Stock disponible:</strong>
+                <span id="detalle-stock"></span>
+            </p>
+
+            <p>
+                <strong>Unidad:</strong>
+                <span id="detalle-unidad"></span>
+            </p>
+
+            <p>
+                <strong>Precio:</strong>
+                $<span id="detalle-precio"></span>
+            </p>
+
             <h4>Descripción</h4>
+
             <p id="detalle-descripcion"></p>
-            <h4>Ingredientes</h4>
-            <p id="detalle-ingredientes"></p>
-            <a id="detalle-video" href="#" target="_blank" class="enlace-video">▶ Ver Video Tutorial</a>
 
             <div class="acciones-modal">
-                <button class="btn-principal" style="width:auto;" id="detalle-agregar">Agregar a Mi Menú</button>
+
+                <button
+                    type="button"
+                    class="btn-principal"
+                    style="width: auto;"
+                    id="detalle-agregar"
+                >
+                    Agregar al pedido
+                </button>
+
             </div>
+
         </div>
+
     </div>
 
     <script src="/js/cliente.js"></script>
+
 </body>
 
 </html>
