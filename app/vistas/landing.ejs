@@ -15,7 +15,7 @@
         <div>
             <h1>Sazón EPN</h1>
             <p class="subtitulo-sistema">
-                Inventario Gastronómico 
+                Inventario Gastronómico
             </p>
         </div>
         <div>
@@ -30,7 +30,8 @@
         <div class="hero-contenido">
             <h2>Sazón EPN</h2>
             <p>
-                Gestiona productos gastronómicos de forma eficiente, consulta disponibilidad en tiempo real y explora un sistema distribuido diseñado para alto rendimiento.
+                Gestiona productos gastronómicos de forma eficiente, consulta disponibilidad en tiempo real y explora un
+                sistema distribuido diseñado para alto rendimiento.
             </p>
         </div>
     </section>
@@ -46,27 +47,32 @@
 
             <div class="grid-categorias-landing">
                 <div class="tarjeta-categoria-landing">
-                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80" alt="Platos fuertes">
+                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80"
+                        alt="Platos fuertes">
                     <h3>Platos fuertes</h3>
                     <p>Preparaciones completas y deliciosas para tu almuerzo o cena.</p>
                 </div>
                 <div class="tarjeta-categoria-landing">
-                    <img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80" alt="Sopas">
+                    <img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80"
+                        alt="Sopas">
                     <h3>Sopas</h3>
                     <p>Opciones tradicionales y reconfortantes.</p>
                 </div>
                 <div class="tarjeta-categoria-landing">
-                    <img src="https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=600&q=80" alt="Entradas">
+                    <img src="https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=600&q=80"
+                        alt="Entradas">
                     <h3>Entradas</h3>
                     <p>Sabores ligeros ideales para comenzar.</p>
                 </div>
                 <div class="tarjeta-categoria-landing">
-                    <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80" alt="Postres">
+                    <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80"
+                        alt="Postres">
                     <h3>Postres</h3>
                     <p>Opciones dulces para complementar tu experiencia.</p>
                 </div>
                 <div class="tarjeta-categoria-landing">
-                    <img src="https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80" alt="Bebidas">
+                    <img src="https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80"
+                        alt="Bebidas">
                     <h3>Bebidas</h3>
                     <p>Refrescos y jugos para acompañar tus comidas.</p>
                 </div>
@@ -78,15 +84,12 @@
             <h2 class="titulo-seccion-landing">Productos destacados</h2>
 
             <div class="grid-recetas">
-                <% if (productos && productos.length > 0) { %>
-                    <% productos.forEach(producto => { %>
+                <% if (productos && productos.length> 0) { %>
+                    <% productos.forEach(producto=> { %>
                         <article class="tarjeta-receta">
                             <div class="contenedor-imagen-producto">
-                                <img
-                                    src="<%= producto.imagen_url || 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80' %>"
-                                    alt="<%= producto.nombre %>"
-                                    class="imagen-receta"
-                                >
+                                <img src="<%= producto.imagen_url || 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80' %>"
+                                    alt="<%= producto.nombre %>" class="imagen-receta">
                             </div>
                             <div class="cuerpo-tarjeta">
                                 <span class="categoria-badge">
@@ -100,12 +103,12 @@
                                 </p>
                             </div>
                         </article>
-                    <% }) %>
-                <% } else { %>
-                    <div class="estado-vacio estado-vacio-completo">
-                        <p>No hay productos destacados disponibles por el momento.</p>
-                    </div>
-                <% } %>
+                        <% }) %>
+                            <% } else { %>
+                                <div class="estado-vacio estado-vacio-completo">
+                                    <p>No hay productos destacados disponibles por el momento.</p>
+                                </div>
+                                <% } %>
             </div>
         </section>
 
@@ -113,9 +116,11 @@
         <section class="seccion-landing seccion-sobre-proyecto">
             <h2 class="titulo-seccion-landing">Sobre el proyecto</h2>
             <p class="texto-seccion-landing">
-                Este proyecto corresponde al desarrollo de un sistema distribuido para la gestión de inventario gastronómico. Permite administrar productos, consultar disponibilidad y trabajar con una arquitectura basada en múltiples nodos web, balanceador NGINX y base de datos replicada.
+                Este proyecto corresponde al desarrollo de un sistema distribuido para la gestión de inventario
+                gastronómico. Permite administrar productos, consultar disponibilidad y trabajar con una arquitectura
+                basada en múltiples nodos web, balanceador NGINX y base de datos replicada.
             </p>
-            
+
             <ul class="lista-caracteristicas-landing">
                 <li>Gestión de inventario gastronómico</li>
                 <li>Arquitectura distribuida</li>
@@ -128,7 +133,7 @@
         <!-- 5. SECCIÓN “NUESTRO EQUIPO” -->
         <section class="seccion-landing">
             <h2 class="titulo-seccion-landing">Nuestro equipo</h2>
-            
+
             <div class="grid-equipo-landing">
                 <!-- Miembro 1 -->
                 <div class="tarjeta-equipo-landing tarjeta-equipo-minimalista">
@@ -143,7 +148,7 @@
                 <div class="tarjeta-equipo-landing tarjeta-equipo-minimalista">
                     <div class="avatar-equipo avatar-pequeno">A</div>
                     <div class="info-equipo-minimalista">
-                        <h3>Alessia Pérez Palacios</h3>
+                        <h3>Alessia de los Ángeles Pérez Palacios</h3>
                         <a href="mailto:alessiaperezpalacios@gmail.com">alessiaperezpalacios@gmail.com</a>
                     </div>
                 </div>
@@ -152,7 +157,7 @@
                 <div class="tarjeta-equipo-landing tarjeta-equipo-minimalista">
                     <div class="avatar-equipo avatar-pequeno">F</div>
                     <div class="info-equipo-minimalista">
-                        <h3>Francis Guaman</h3>
+                        <h3>Francis Josue Guaman Ilvis</h3>
                         <a href="mailto:francis.guaman@epn.edu.ec">francis.guaman@epn.edu.ec</a>
                     </div>
                 </div>
@@ -166,7 +171,8 @@
         <p><strong>Sazón EPN - Inventario Gastronómico Distribuido</strong></p>
         <p>Proyecto desarrollado por Odaliz Balseca, Alessia Pérez y Francis Guaman</p>
         <p>Escuela Politécnica Nacional</p>
-        <p>&copy; <%= new Date().getFullYear() %></p>
+        <p>&copy; <%= new Date().getFullYear() %>
+        </p>
     </footer>
 
 </body>
