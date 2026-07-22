@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const os = require('os');
 
 const {
     conexionMaestro,
@@ -34,10 +35,16 @@ router.get('/', async (req, res) => {
              ORDER BY nombre ASC
              LIMIT 6`
         );
-        res.render('landing', { productos });
+        res.render('landing', { 
+            productos,
+            nombreNodo: os.hostname()
+        });
     } catch (err) {
         console.error(err);
-        res.render('landing', { productos: [] });
+        res.render('landing', { 
+            productos: [],
+            nombreNodo: os.hostname()
+        });
     }
 });
 
