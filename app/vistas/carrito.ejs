@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi carrito | Sazón EPN</title>
+    <link rel="stylesheet" href="/css/estilo.css">
+</head>
+
+<body>
+
+    <header class="barra-superior">
+        <div>
+            <h1>Sazón EPN</h1>
+            <p class="subtitulo-sistema">
+                Inventario Gastronómico Distribuido
+            </p>
+        </div>
+
+        <div>
+            <span>
+                Bienvenido/a,
+                <strong>
+                    <%= usuarioSesion ? usuarioSesion.nombre : 'Cliente' %>
+                </strong>
+            </span>
+
+            <span class="etiqueta-nodo" style="margin-left: 10px;">
+                Nodo: <%= nombreNodo %>
+            </span>
+
+            <a href="/cliente" class="btn-volver" style="margin-right: 5px;">
+                Volver al catálogo
+            </a>
+
+            <a href="/salir" class="btn-salir">
+                Cerrar Sesión
+            </a>
+        </div>
+    </header>
+
+    <main class="contenedor-principal">
+
+        <h2 style="color: var(--color-marron-oscuro); margin-bottom: 1.5rem;">Mi carrito</h2>
+
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="alerta-error">
+                <%= error %>
+            </div>
+        <% } %>
+
+        <% if (typeof mensaje !== 'undefined' && mensaje) { %>
+            <div class="alerta-exito">
+                <%= mensaje %>
+            </div>
+        <% } %>
+
+        <% if (detalles && detalles.length > 0) { %>
+            <section class="tarjeta-blanca">
+                <div class="carrito-contenedor-tabla" style="overflow-x: auto;">
+                    <table class="tabla-datos">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Precio Unitario</th>
+                                <th>Stock Disp.</th>
+                                <th>Cantidad</th>
+                                <th>Subtotal</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% detalles.forEach(item => { %>
+                                <tr>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 1rem;">
+                                            <img src="<%= item.imagen_url || 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80' %>" alt="<%= item.nombre %>" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                                            <div>
+                                                <strong><%= item.nombre %></strong><br>
+                                                <small style="color: #64748b;"><%= item.codigo %></small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>$<%= Number(item.precio).toFixed(2) %></td>
+                                    <td>
+                                        <%= item.stock %> <%= item.unidad %>
+                                    </td>
+                                    <td>
+                                        <form method="POST" action="/carrito/actualizar/<%= item.detalle_id %>" style="display: flex; gap: 0.5rem; align-items: center;">
+                                            <input type="number" name="cantidad" value="<%= item.cantidad %>" min="1" max="<%= item.stock %>" class="input-cantidad">
+                                            <button type="submit" class="btn-secundario btn-pequeno">Actualizar</button>
+                                        </form>
+                                        <% if (item.cantidad > item.stock) { %>
+                                            <p style="color: var(--color-rojo); font-size: 0.8rem; margin-top: 0.5rem; max-width: 150px;">
+                                                ⚠️ La cantidad guardada supera el stock actual. Actualiza la cantidad.
+                                            </p>
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <strong>$<%= Number(item.subtotal).toFixed(2) %></strong>
+                                    </td>
+                                    <td>
+                                        <form method="POST" action="/carrito/eliminar/<%= item.detalle_id %>">
+                                            <button type="submit" class="btn-eliminar-modal btn-pequeno">
+                                                Eliminar
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="carrito-resumen">
+                    <h3>Total general: $<%= Number(total).toFixed(2) %></h3>
+                    
+                    <form method="POST" action="/carrito/vaciar" style="margin-top: 1rem;">
+                        <button type="submit" class="btn-eliminar-modal">
+                            Vaciar carrito
+                        </button>
+                    </form>
+                </div>
+            </section>
+        <% } else { %>
+            <section class="tarjeta-blanca estado-vacio">
+                <h3>Tu carrito está vacío.</h3>
+                <p style="color: var(--color-texto-secundario); margin-bottom: 1.5rem;">Aún no has seleccionado ningún producto de nuestro inventario.</p>
+                <a href="/cliente" class="btn-principal" style="width: auto; text-decoration: none; display: inline-block;">Volver al catálogo</a>
+            </section>
+        <% } %>
+
+    </main>
+
+</body>
+
+</html>

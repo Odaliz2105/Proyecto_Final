@@ -7,6 +7,7 @@ const path = require('path');
 const rutasAutenticacion = require('./rutas/autenticacion');
 const rutasProductos = require('./rutas/productos');
 const rutasPerfil = require('./rutas/perfil');
+const rutasCarrito = require('./rutas/carrito');
 const app = express();
 
 // Configuración de vistas y estáticos
@@ -48,6 +49,7 @@ app.get('/salud', (req, res) => {
 app.use('/', rutasAutenticacion);
 app.use('/', rutasProductos);
 app.use('/', rutasPerfil);
+app.use('/', rutasCarrito);
 
 // Manejo de error 404
 app.use((req, res) => {

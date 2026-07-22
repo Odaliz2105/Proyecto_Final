@@ -1040,3 +1040,308 @@ a {
         align-items: flex-start;
     }
 }
+
+/* =========================================================
+   LANDING PAGE Y PIE DE PÁGINA
+   ========================================================= */
+
+.pie-pagina {
+    background-color: var(--color-marron-oscuro);
+    color: #f8dcc2;
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: 3rem;
+    font-size: 0.9rem;
+}
+
+.seccion-arquitectura {
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    margin: 2rem 0;
+}
+
+.seccion-arquitectura h3 {
+    color: var(--color-marron-oscuro);
+    margin-bottom: 0.8rem;
+}
+
+.seccion-arquitectura p {
+    color: var(--color-texto-secundario);
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.btn-login-landing {
+    width: auto;
+}
+
+.seccion-destacados-margen {
+    margin-bottom: 1.5rem;
+}
+
+.descripcion-producto-landing {
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.estado-vacio-completo {
+    grid-column: 1 / -1;
+}
+
+/* =========================================================
+   CARRITO DE COMPRAS
+   ========================================================= */
+
+.carrito-contenedor-tabla {
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+}
+
+.carrito-resumen {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 2px solid var(--color-borde);
+    padding-top: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.input-cantidad {
+    width: 70px;
+    padding: 0.4rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.btn-pequeno {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.82rem;
+}
+
+/* =========================================================
+   LOGIN PASSWORD TOGGLE
+   ========================================================= */
+
+.contenedor-password {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.contenedor-password input {
+    padding-right: 40px; /* Espacio para el botón */
+}
+
+.btn-toggle-password {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    color: var(--color-texto-secundario);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 4px;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-toggle-password:hover {
+    color: var(--color-marron-oscuro);
+    background-color: rgba(0,0,0,0.05);
+}
+
+.btn-toggle-password:focus {
+    outline: 2px solid var(--color-naranja);
+    color: var(--color-marron-oscuro);
+}
+
+.icono-ojo {
+    display: block;
+}
+
+/* =========================================================
+   NUEVOS ESTILOS LANDING PAGE
+   ========================================================= */
+
+.hero-landing {
+    padding: 5rem 1.5rem;
+}
+
+.seccion-landing {
+    margin: 4rem 0;
+}
+
+.titulo-seccion-landing {
+    color: var(--color-marron-oscuro);
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.texto-seccion-landing {
+    color: var(--color-texto-secundario);
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 2rem auto;
+    font-size: 1.05rem;
+}
+
+.grid-categorias-landing {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.tarjeta-categoria-landing {
+    background: var(--color-superficie);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-medio);
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: var(--sombra-suave);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tarjeta-categoria-landing:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--sombra-media);
+}
+
+.tarjeta-categoria-landing img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: var(--radio-pequeno);
+    margin-bottom: 1rem;
+}
+
+.tarjeta-categoria-landing h3 {
+    color: var(--color-marron-oscuro);
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.tarjeta-categoria-landing p {
+    font-size: 0.9rem;
+    color: var(--color-texto-secundario);
+}
+
+.seccion-sobre-proyecto {
+    background-color: var(--color-superficie-secundaria);
+    padding: 3rem 2rem;
+    border-radius: var(--radio-grande);
+    text-align: center;
+}
+
+.lista-caracteristicas-landing {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.lista-caracteristicas-landing li {
+    background-color: var(--color-superficie);
+    color: var(--color-marron);
+    padding: 0.7rem 1.2rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: 1px solid #efd8bb;
+    box-shadow: 0 2px 8px rgba(76, 47, 30, 0.05);
+}
+
+.grid-equipo-landing {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.tarjeta-equipo-landing {
+    background-color: var(--color-superficie);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-medio);
+    padding: 2rem;
+    box-shadow: var(--sombra-suave);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.avatar-equipo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-naranja), var(--color-amarillo));
+    color: #ffffff;
+    font-size: 2rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 12px rgba(232, 121, 36, 0.2);
+}
+
+.tarjeta-equipo-landing h3 {
+    color: var(--color-marron-oscuro);
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+}
+
+.tarjeta-equipo-landing h4 {
+    color: var(--color-naranja);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.bio-equipo {
+    font-size: 0.9rem;
+    color: var(--color-texto-secundario);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+    flex-grow: 1;
+}
+
+.tags-equipo {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-bottom: 1.5rem;
+}
+
+.tags-equipo span {
+    background-color: #fff0d8;
+    color: #9b4c13;
+    font-size: 0.75rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    border: 1px solid #f2cf9e;
+}
+
+.contacto-equipo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    font-size: 0.85rem;
+}
+
+.contacto-equipo a, .contacto-equipo span {
+    color: var(--color-marron);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.contacto-equipo a:hover {
+    color: var(--color-naranja-hover);
+    text-decoration: underline;
+}

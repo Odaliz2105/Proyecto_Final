@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sazón EPN - Inventario Gastronómico Distribuido</title>
+    <link rel="stylesheet" href="/css/estilo.css">
+</head>
+
+<body>
+
+    <!-- 1. HEADER / HERO PRINCIPAL -->
+    <header class="barra-superior">
+        <div>
+            <h1>Sazón EPN</h1>
+            <p class="subtitulo-sistema">
+                Inventario Gastronómico Distribuido
+            </p>
+        </div>
+        <div>
+            <a href="/login" class="btn-principal btn-login-landing">
+                Iniciar sesión
+            </a>
+        </div>
+    </header>
+
+    <section class="franja-hero hero-landing">
+        <h2>Sazón EPN</h2>
+        <p>
+            Gestiona productos gastronómicos de forma eficiente, consulta disponibilidad en tiempo real y explora un sistema distribuido diseñado para alto rendimiento.
+        </p>
+    </section>
+
+    <main class="contenedor-principal">
+
+        <!-- 2. SECCIÓN DE CATEGORÍAS -->
+        <section class="seccion-landing">
+            <h2 class="titulo-seccion-landing">Amplias categorías para satisfacer tus necesidades</h2>
+            <p class="texto-seccion-landing">
+                Explora nuestras categorías gastronómicas y encuentra productos ideales para cada ocasión.
+            </p>
+
+            <div class="grid-categorias-landing">
+                <div class="tarjeta-categoria-landing">
+                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80" alt="Platos fuertes">
+                    <h3>Platos fuertes</h3>
+                    <p>Preparaciones completas y deliciosas para tu almuerzo o cena.</p>
+                </div>
+                <div class="tarjeta-categoria-landing">
+                    <img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80" alt="Sopas">
+                    <h3>Sopas</h3>
+                    <p>Opciones tradicionales y reconfortantes.</p>
+                </div>
+                <div class="tarjeta-categoria-landing">
+                    <img src="https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=600&q=80" alt="Entradas">
+                    <h3>Entradas</h3>
+                    <p>Sabores ligeros ideales para comenzar.</p>
+                </div>
+                <div class="tarjeta-categoria-landing">
+                    <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80" alt="Postres">
+                    <h3>Postres</h3>
+                    <p>Opciones dulces para complementar tu experiencia.</p>
+                </div>
+                <div class="tarjeta-categoria-landing">
+                    <img src="https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80" alt="Bebidas">
+                    <h3>Bebidas</h3>
+                    <p>Refrescos y jugos para acompañar tus comidas.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. PRODUCTOS DESTACADOS -->
+        <section class="seccion-landing">
+            <h2 class="titulo-seccion-landing">Productos destacados</h2>
+
+            <div class="grid-recetas">
+                <% if (productos && productos.length > 0) { %>
+                    <% productos.forEach(producto => { %>
+                        <article class="tarjeta-receta">
+                            <div class="contenedor-imagen-producto">
+                                <img
+                                    src="<%= producto.imagen_url || 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80' %>"
+                                    alt="<%= producto.nombre %>"
+                                    class="imagen-receta"
+                                >
+                            </div>
+                            <div class="cuerpo-tarjeta">
+                                <span class="categoria-badge">
+                                    <%= producto.categoria %>
+                                </span>
+                                <h3>
+                                    <%= producto.nombre %>
+                                </h3>
+                                <p class="descripcion-producto-landing">
+                                    <%= producto.descripcion || 'Sin descripción disponible.' %>
+                                </p>
+                            </div>
+                        </article>
+                    <% }) %>
+                <% } else { %>
+                    <div class="estado-vacio estado-vacio-completo">
+                        <p>No hay productos destacados disponibles por el momento.</p>
+                    </div>
+                <% } %>
+            </div>
+        </section>
+
+        <!-- 4. SECCIÓN SOBRE EL PROYECTO -->
+        <section class="seccion-landing seccion-sobre-proyecto">
+            <h2 class="titulo-seccion-landing">Sobre el proyecto</h2>
+            <p class="texto-seccion-landing">
+                Este proyecto corresponde al desarrollo de un sistema distribuido para la gestión de inventario gastronómico. Permite administrar productos, consultar disponibilidad y trabajar con una arquitectura basada en múltiples nodos web, balanceador NGINX y base de datos replicada.
+            </p>
+            
+            <ul class="lista-caracteristicas-landing">
+                <li>Gestión de inventario gastronómico</li>
+                <li>Arquitectura distribuida</li>
+                <li>Balanceo de carga con NGINX</li>
+                <li>Base de datos maestro/réplica</li>
+                <li>Alta disponibilidad y escalabilidad</li>
+            </ul>
+        </section>
+
+        <!-- 5. SECCIÓN “NUESTRO EQUIPO” -->
+        <section class="seccion-landing">
+            <h2 class="titulo-seccion-landing">Nuestro equipo</h2>
+            
+            <div class="grid-equipo-landing">
+                <!-- Miembro 1 -->
+                <div class="tarjeta-equipo-landing">
+                    <div class="avatar-equipo">O</div>
+                    <h3>Odaliz Aracely Balseca Valencia</h3>
+                    <h4>Estudiante de Desarrollo de Software - EPN</h4>
+                    <p class="bio-equipo">Tecnóloga en formación con experiencia práctica en soporte técnico, mantenimiento informático, desarrollo de aplicaciones y análisis de datos. Posee conocimientos en programación orientada a objetos, bases de datos relacionales y NoSQL, y diseño de interfaces.</p>
+                    <div class="tags-equipo">
+                        <span>Java</span> <span>JavaScript</span> <span>Node.js</span> <span>React</span> <span>Python</span> <span>MySQL</span> <span>PostgreSQL</span> <span>MongoDB</span> <span>Docker</span> <span>UX/UI</span>
+                    </div>
+                    <div class="contacto-equipo">
+                        <a href="mailto:balsecoadaliz@gmail.com">balsecoadaliz@gmail.com</a>
+                        <a href="https://github.com/Odaliz2105" target="_blank">github.com/Odaliz2105</a>
+                    </div>
+                </div>
+
+                <!-- Miembro 2 -->
+                <div class="tarjeta-equipo-landing">
+                    <div class="avatar-equipo">A</div>
+                    <h3>Alessia de los Ángeles Pérez Palacios</h3>
+                    <h4>Estudiante de Desarrollo de Software</h4>
+                    <p class="bio-equipo">Estudiante de la Escuela Politécnica Nacional enfocada en resolver problemas tecnológicos mediante soluciones eficientes, automatización de procesos y optimización de sistemas. Se destaca por su responsabilidad, adaptabilidad y trabajo en equipo.</p>
+                    <div class="tags-equipo">
+                        <span>Python</span> <span>JavaScript</span> <span>APIs REST</span> <span>Bases de datos</span> <span>Git & GitHub</span> <span>Docker</span> <span>Linux</span> <span>Postman</span> <span>Maven</span>
+                    </div>
+                    <div class="contacto-equipo">
+                        <a href="mailto:alessiaperezpalacios@gmail.com">alessiaperezpalacios@gmail.com</a>
+                        <span>Quito, Ecuador</span>
+                    </div>
+                </div>
+
+                <!-- Miembro 3 -->
+                <div class="tarjeta-equipo-landing">
+                    <div class="avatar-equipo">F</div>
+                    <h3>Francis Guaman</h3>
+                    <h4>Estudiante EPN / Backend y Sistemas Distribuidos</h4>
+                    <p class="bio-equipo">Estudiante enfocado en el desarrollo de software y sistemas distribuidos, con interés en arquitecturas backend, integración de frontend, despliegue de microservicios y uso de contenedores para asegurar escalabilidad y rendimiento.</p>
+                    <div class="tags-equipo">
+                        <span>JavaScript</span> <span>Node.js</span> <span>Docker</span> <span>MySQL</span> <span>Redes</span> <span>Backend</span> <span>Frontend</span> <span>Sistemas Distribuidos</span>
+                    </div>
+                    <div class="contacto-equipo">
+                        <a href="mailto:francis.guaman@epn.edu.ec">francis.guaman@epn.edu.ec</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 6. FOOTER -->
+    <footer class="pie-pagina">
+        <p><strong>Sazón EPN - Inventario Gastronómico Distribuido</strong></p>
+        <p>Proyecto desarrollado por Odaliz Balseca, Alessia Pérez y Francis Guaman</p>
+        <p>Escuela Politécnica Nacional</p>
+        <p>&copy; <%= new Date().getFullYear() %></p>
+    </footer>
+
+</body>
+
+</html>

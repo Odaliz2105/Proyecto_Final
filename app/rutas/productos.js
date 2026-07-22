@@ -25,15 +25,20 @@ const esCliente = (req, res, next) => {
     }
     res.redirect('/login');
 };
-// Redirección inicial
-router.get('/', (req, res) => {
-    if (!req.session.usuario) {
-        return res.redirect('/login');
+// Landing page pública
+router.get('/', async (req, res) => {
+    try {
+        const [productos] = await conexionEsclavo.query(
+            `SELECT * FROM productos
+             WHERE disponible = 1
+             ORDER BY nombre ASC
+             LIMIT 6`
+        );
+        res.render('landing', { productos });
+    } catch (err) {
+        console.error(err);
+        res.render('landing', { productos: [] });
     }
-    res.redirect(
-        req.session.usuario.rol === 'admin'
-            ? '/admin' : '/cliente'
-    );
 });
 
 // ROL ADMINISTRADOR: CRUD DE PRODUCTOS
@@ -196,13 +201,17 @@ router.get('/cliente', esCliente, async (req, res) => {
         );
         res.render('catalogo-cliente', {
             productos,
-            categoriaFiltro
+            categoriaFiltro,
+            mensaje: req.query.mensaje || null,
+            error: req.query.error || null
         });
     } catch (err) {
         console.error(err);
         res.render('catalogo-cliente', {
             productos: [],
-            categoriaFiltro: ''
+            categoriaFiltro: '',
+            mensaje: null,
+            error: 'Ocurrió un error al cargar el catálogo.'
         });
     }
 });

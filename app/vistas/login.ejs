@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sazón EPN - Iniciar Sesión</title>
     <link rel="stylesheet" href="/css/estilo.css">
 </head>
@@ -59,13 +60,22 @@
                 <div class="campo-formulario">
                     <label>Contraseña:</label>
 
-                    <input
-                        type="password"
-                        name="clave"
-                        placeholder="••••••••"
-                        autocomplete="current-password"
-                        required
-                    >
+                    <div class="contenedor-password">
+                        <input
+                            type="password"
+                            name="clave"
+                            id="input-clave"
+                            placeholder="••••••••"
+                            autocomplete="current-password"
+                            required
+                        >
+                        <button type="button" id="btn-toggle-clave" class="btn-toggle-password" aria-label="Mostrar contraseña" title="Mostrar contraseña">
+                            <svg class="icono-ojo" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
 
                 <button
@@ -81,6 +91,7 @@
 
     </div>
 
+    <script src="/js/login.js"></script>
 </body>
 
 </html>

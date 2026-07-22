@@ -54,8 +54,7 @@ async function abrirDetalleCliente(id) {
         document.getElementById('detalle-descripcion').textContent =
             producto.descripcion || 'Sin descripción registrada.';
 
-        document.getElementById('detalle-agregar').onclick = () =>
-            agregarAlPedido(producto.nombre);
+        // El botón temporal fue eliminado, ya no se asocia evento de clic.
 
         document
             .getElementById('modal-fondo')
@@ -72,11 +71,4 @@ function cerrarModalCliente() {
         .getElementById('modal-fondo')
         .classList.remove('activo');
 }
-
-// Función temporal.
-// Más adelante la conectaremos con el carrito real.
-function agregarAlPedido(nombreProducto) {
-    alert(
-        `El producto "${nombreProducto}" fue agregado al pedido.`
-    );
-}
+

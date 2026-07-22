@@ -29,6 +29,10 @@
                 Nodo: <%= nombreNodo %>
             </span>
 
+            <a href="/carrito" class="btn-volver" style="margin-right: 5px;">
+                Mi carrito
+            </a>
+
             <a href="/perfil" class="btn-volver">
                 Mi Perfil
             </a>
@@ -49,6 +53,18 @@
     </section>
 
     <main class="contenedor-principal">
+
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="alerta-error" style="margin-bottom: 1.5rem;">
+                <%= error %>
+            </div>
+        <% } %>
+
+        <% if (typeof mensaje !== 'undefined' && mensaje) { %>
+            <div class="alerta-exito" style="margin-bottom: 1.5rem;">
+                <%= mensaje %>
+            </div>
+        <% } %>
 
         <section class="tarjeta-blanca" style="margin-bottom: 1.5rem;">
 
@@ -173,13 +189,20 @@
                             $<%= Number(producto.precio).toFixed(2) %>
                         </p>
 
-                        <button
-                            type="button"
-                            class="btn-agregar"
-                            onclick="event.stopPropagation(); agregarAlPedido('<%= producto.nombre %>')"
+                        <form
+                            method="POST"
+                            action="/carrito/agregar/<%= producto.id %>"
+                            class="formulario-agregar-carrito"
+                            onclick="event.stopPropagation();"
                         >
-                            Agregar al pedido
-                        </button>
+                            <button
+                                type="submit"
+                                class="btn-agregar"
+                                <%= producto.stock <= 0 ? 'disabled' : '' %>
+                            >
+                                Agregar al carrito
+                            </button>
+                        </form>
 
                     </div>
 
@@ -250,16 +273,14 @@
             <p id="detalle-descripcion"></p>
 
             <div class="acciones-modal">
-
                 <button
                     type="button"
-                    class="btn-principal"
+                    class="btn-secundario"
                     style="width: auto;"
-                    id="detalle-agregar"
+                    onclick="cerrarModalCliente()"
                 >
-                    Agregar al pedido
+                    Cerrar
                 </button>
-
             </div>
 
         </div>
