@@ -1345,3 +1345,76 @@ a {
     color: var(--color-naranja-hover);
     text-decoration: underline;
 }
+
+/* =========================================================
+   MEJORAS VISUALES LANDING
+   ========================================================= */
+
+.hero-landing {
+    position: relative;
+    padding: 7rem 1.5rem;
+    background-image: url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Efecto parallax simple */
+    color: white;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, rgba(76, 47, 30, 0.8), rgba(232, 121, 36, 0.6));
+    z-index: 1;
+}
+
+.hero-contenido {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero-contenido h2 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.hero-contenido p {
+    font-size: 1.2rem;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    color: #f8fafc;
+}
+
+/* Tarjetas de equipo minimalistas */
+.tarjeta-equipo-minimalista {
+    flex-direction: row;
+    align-items: center;
+    padding: 1.5rem;
+    gap: 1.5rem;
+    text-align: left;
+}
+
+.avatar-pequeno {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+    margin-bottom: 0;
+    flex-shrink: 0;
+}
+
+.info-equipo-minimalista h3 {
+    margin-bottom: 0.2rem;
+    font-size: 1.1rem;
+}
+
+.info-equipo-minimalista a {
+    color: var(--color-texto-secundario);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.info-equipo-minimalista a:hover {
+    color: var(--color-naranja);
+}
