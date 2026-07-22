@@ -1,3 +1,5 @@
+SET NAMES utf8mb4;
+SET CHARACTER SET utf8mb4;
 CREATE DATABASE IF NOT EXISTS inventario_gastronomico_db
 CHARACTER SET utf8mb4
 COLLATE utf8mb4_unicode_ci;
@@ -299,7 +301,7 @@ VALUES
     'porciones',
     20,
     3.50,
-    'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80'
+    'https://i.pinimg.com/1200x/75/56/7a/75567a8cac543aa246946e6230999737.jpg'
 ),
 (
     'PROD-002',
@@ -309,7 +311,7 @@ VALUES
     'porciones',
     15,
     2.75,
-    'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80'
+    'https://i.pinimg.com/1200x/7a/4a/67/7a4a67e8e97689d311ced11442bf1395.jpg'
 ),
 (
     'PROD-003',
@@ -319,7 +321,7 @@ VALUES
     'unidades',
     35,
     1.25,
-    'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=800&q=80'
+    'https://i.pinimg.com/736x/b4/e9/de/b4e9deb78c4a29a643fbd52366b85ece.jpg'
 ),
 (
     'PROD-004',
@@ -329,7 +331,7 @@ VALUES
     'vasos',
     25,
     1.50,
-    'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=800&q=80'
+    'https://i.pinimg.com/736x/bb/7e/d8/bb7ed8004972fa51190ebff3fab24764.jpg'
 ),
 (
     'PROD-005',
